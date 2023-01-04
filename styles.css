@@ -1,0 +1,25 @@
+#board-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 360px;
+    margin: 35px auto 30px auto;
+}
+
+.board-square {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Pangolin', cursive;
+    font-size: 100px;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+}
+
+.top, .mid {
+    border-bottom: 3px solid #004466;
+}
+
+.left, .center {
+    border-right: 3px solid #004466;
+}
