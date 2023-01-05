@@ -1,8 +1,13 @@
-const gameModule =  (function () {
+const game =  (function () {
     
-    const gameBoard = ["", "", "", "", "", "", "", "", ""];
+    let gameBoard = ["", "", "", "", "", "", "", "", ""];
     let currentPlayer = "X";
-    gameActive = true;
+    let gameActive = true;
+    let winningPlayer =''
+
+    const gameStatusMessage = document.getElementById('game-status');
+    const currentPlayerTurn = () => `It's ${currentPlayer}'s turn`;
+    gameStatusMessage.innerText = currentPlayerTurn();
 
     const winningCombos = [
         [0, 1, 2],
@@ -27,15 +32,11 @@ const gameModule =  (function () {
         // add marker to gameboard and change player marker (x) 
         // check if there is a win
 
-        // call function to add marker to gameboard
-        addMarker(clickedSquare)
-
         // call function to check the result 
         checkResult(clickedSquareNumber)
-        
 
-
-
+        // call function to add marker to gameboard
+        addMarker(clickedSquare)
     }
 
     // Function to add player marker to gameboard
@@ -48,11 +49,18 @@ const gameModule =  (function () {
         } else {
             currentPlayer = 'X'
         }
+        
+        // change player turn text if game is still active
+        if (gameActive) {
+            gameStatusMessage.innerText = currentPlayerTurn();
+        }        
     }
 
+    // function to check if the game has been won
     function checkResult(clickedSquareNumber){
 
         gameBoard[clickedSquareNumber] = currentPlayer
+        console.log(gameBoard)
         let gameWon = false;
 
         for (let i = 0; i <= 7; i++) {
@@ -65,21 +73,38 @@ const gameModule =  (function () {
             }
             if (a === b && b === c) {
                 gameWon = true;
+                console.log(a)
+                winningPlayer = a
                 break;
             }
         }
 
+        // message if game has been won
         if(gameWon){
-            alert("you won the game!!")
+            gameStatusMessage.innerText =`${winningPlayer} won the game!` // change the message to someone winning
+            gameActive = false // game become inactive
+        }
+
+        // message if game is a tie 
+        if (gameBoard.includes('') === false){
+            gameStatusMessage.innerText = `It's a tie game!`
+            gameActive = false
         }
     }
 
+    function restart(){
+        gameBoard = ["", "", "", "", "", "", "", "", ""];
+        document.querySelectorAll('.board-square').forEach(square => square.innerText = "");
+        gameActive = true;
+        currentPlayer = "X";
+        gameStatusMessage.innerText = currentPlayerTurn();
 
-    return { handleClick }
+    }
+
+    return { handleClick, restart }
 
 })()
 
 
-document.querySelectorAll('.board-square').forEach(square => square.addEventListener('click', gameModule.handleClick));
-
-// console.log(square)
+document.querySelectorAll('.board-square').forEach(square => square.addEventListener('click', game.handleClick));
+document.getElementById('restart-game').addEventListener('click', game.restart);
