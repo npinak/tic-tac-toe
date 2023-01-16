@@ -3,3 +3,5 @@
 Tic-Tac-Toe game
 
 Technologies used: HTML, CSS, JavaScript
+
+![](https://github.com/npinak/tic-tac-toe/blob/main/tic-tac-toe.gif)
